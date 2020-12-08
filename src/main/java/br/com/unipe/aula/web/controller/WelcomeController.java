@@ -25,7 +25,6 @@ public class WelcomeController {
 		dao = new AlbumDAO();
 	}
 	
-	
 	@RequestMapping(value = "/teste", method = RequestMethod.GET)
 	public String welcome() {
 		return "welcome";
@@ -76,7 +75,7 @@ public class WelcomeController {
 	}
 	
 	@GetMapping(value = "/excluir/{id}")
-	public String excluirAlbum(@PathVariable("id") int id, Model model) {
+	public String excluirAlbum(@PathVariable("id") Long id, Model model) {
 		
 		dao.excluir(id);
 		
@@ -84,7 +83,7 @@ public class WelcomeController {
 	}
 	
 	@GetMapping(value = "/editar/{id}") 
-	public ModelAndView editarAlbum(@PathVariable("id") int id, Model model){
+	public ModelAndView editarAlbum(@PathVariable("id") Long id, Model model){
 		
 		ModelAndView view = new ModelAndView("editar");
 		model.addAttribute("album", dao.getId(id));
@@ -93,9 +92,9 @@ public class WelcomeController {
 	}
 	
 	@PostMapping(value = "/update/{id}")
-	public String updateAlbum(@PathVariable("id") int id, @ModelAttribute Album album) {
+	public String updateAlbum(@ModelAttribute Album album) {
 		
-		dao.editar(id, album);
+		dao.editar(album);
 		
 		return "redirect:../cadastro";
 	}

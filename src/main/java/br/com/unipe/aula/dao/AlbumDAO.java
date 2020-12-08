@@ -1,41 +1,52 @@
 package br.com.unipe.aula.dao;
 
-import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.unipe.aula.model.Album;
 
 @Repository
 public class AlbumDAO {
 	
-	private static List<Album> albums;
+	@PersistenceContext
+	private EntityManager entityManager;
 	
 	public AlbumDAO() {
-		albums = new LinkedList<Album>();
+
 	}
 	
+	@Transactional(readOnly = false)
 	public void salvar(Album album) {
-		albums.add(album);
-		System.out.println(albums);
+		entityManager.persist(album);
 	}
 	
+	@Transactional(readOnly = true)
 	public List<Album> getAll() {
-		return albums;
+		String jpql = "from Album u";
+		TypedQuery<Album> consulta = entityManager.createQuery(jpql, Album.class);
+	
+		return consulta.getResultList();
 	}
 	
-	public Album getId(int id) {
-		return albums.get(id);
+	public Album getId(Long id) {
+		return entityManager.find(Album.class, id);
 	}
 	
-	public void excluir(int id) {
-		albums.remove(id);
+	@Transactional(readOnly = false)
+	public void excluir(Long id) {
+		Album album = getId(id);
+		entityManager.remove(album);
 	}
 	
-	public void editar(int id, Album album) {
-		albums.get(id).setNome(album.getNome());
-		albums.get(id).setInterprete(album.getInterprete());
+	@Transactional(readOnly = false)
+	public void editar(Album album) {
+		entityManager.merge(album);
 	}
 
 }

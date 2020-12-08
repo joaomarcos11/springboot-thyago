@@ -33,8 +33,8 @@
 						<td> ${album.nome}</td>
 						<td> ${album.interprete}</td>
 						<td> 
-							<a href="editar/${albums.indexOf(album)}">Editar</a>
-							<a href="excluir/${albums.indexOf(album)}">Excluir</a>
+							<a href="editar/${album.id}">Editar</a>
+							<a href="excluir/${album.id}">Excluir</a>
 						</td>
 					</tr>
 				</c:forEach>
